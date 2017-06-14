@@ -8,7 +8,7 @@ import PIL.Image
 cap = cv2.VideoCapture(0)
 cap.set(3, 640)  # Width
 cap.set(4, 480)  # Heigh
-cap.set(5, 10)   # FPS
+cap.set(5, 5)   # FPS
 if cap.isOpened() is False:
     raise("IO Error")
 
@@ -26,10 +26,13 @@ while True:
     img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
     #Binarization
-    tresh = 80
+#    tresh = 100
     max_pixel = 255
-    ret, img_thre = cv2.threshold(img_gray, tresh, max_pixel, cv2.THRESH_BINARY)
-
+#    ret, img_thre = cv2.threshold(img_gray, tresh, max_pixel, cv2.THRESH_BINARY)
+    img_thre = cv2.adaptiveThreshold(img_gray, max_pixel, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY,11,2)
+    #二値化にガウシアンフィルタを追加した
+    
+    
     #picture change PIL
     pil_img = PIL.Image.fromarray(img_thre)
     width, height = pil_img.size
